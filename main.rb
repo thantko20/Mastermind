@@ -1,13 +1,9 @@
+require 'pry-byebug'
+
 # Game of Mastermind
 
 # create a constant array of colors(R, G, B, W, B)
-COLOR_KEYS = ['R', 'G', 'B', 'W', 'B'].freeze
-
-module Feedback
-  def key
-    
-  end
-end
+COLOR_KEYS = ['Q', 'W', 'E', 'R', 'T'].freeze
 
 # Computer randomly selects secret colors
 # create computer class
@@ -21,7 +17,9 @@ end
 
 # Human Player has to guess the code
 class Player
-  attr_reader :guess_count, :guesses
+  attr_reader :guesses
+  attr_accessor :guess_count
+
   def initialize
     @guess_count = 0
     @guesses = []
@@ -29,8 +27,6 @@ class Player
 end
 
 class Game
-  include Feedback
-
   attr_reader :creator, :guesser
   def initialize(creator, guesser)
     @creator = creator
@@ -40,17 +36,33 @@ class Game
   def play
     loop do
       if @guesser.guess_count > 12
-        puts "Run out of guess"
+        puts "Run out of guess\nComputer's code is #{@creator.code}"
         break
       end
-      puts @creator.code
       puts "Enter your guess: "
       guess = gets.chomp.to_s
-      if guess == @creator.code
-        puts 'Correct!'
-        break
+      break if check?(guess)
+    end
+  end
+
+  private
+
+  def check?(guess)
+    @guesser.guess_count += 1
+    correct_position = 0
+    if guess == @creator.code
+      puts "Correct! It took you #{guesser.guess_count} guesses!"
+      return true
+    end
+
+    4.times do |i|
+      if @creator.code.split('')[i] == guess.split('')[i]
+        correct_position += 1
       end
     end
+    puts "You have #{correct_position} colors in position."
+    correct_position = 0
+    false
   end
 
 end
