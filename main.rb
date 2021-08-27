@@ -94,7 +94,7 @@ class Game
       @guesser.guess_count += 1
       break if computer_check?(guess)
 
-      puts 'Provide me with some clue(If my guess contains duplicates of specific letter but your code does not have duplicate of that letter, input only one.): '
+      puts 'Provide me with the letters that match(Position doesn\'t matter. Don\'t type duplicated letters from my guess if yours doesn\'t have duplicates.): '
       key = gets.chomp.to_s
       puts '--------------------'
     end
