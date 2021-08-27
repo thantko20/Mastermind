@@ -35,12 +35,14 @@ class Game
 
   def play
     loop do
+      puts "Your previous guesses are: \n#{@guesser.guesses}\n"
       if @guesser.guess_count > 12
         puts "Run out of guess\nComputer's code is #{@creator.code}"
         break
       end
       puts "Enter your guess: "
       guess = gets.chomp.to_s
+      track_guess(guess)
       break if check?(guess)
     end
   end
@@ -65,6 +67,9 @@ class Game
     false
   end
 
+  def track_guess(guess)
+    @guesser.guesses.push(guess)
+  end
 end
 
 computer = Computer.new
